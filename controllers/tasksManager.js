@@ -1,5 +1,5 @@
- const Tasks = require("../models/tasks");
-const User = require("../models/users");
+ const Tasks = require("../Models/TaskSchema");
+const User = require("../Models/Users");
 
 const assignTasks = async (req, res) => {
   try {
