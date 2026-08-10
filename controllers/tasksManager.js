@@ -1,9 +1,31 @@
  const Tasks = require("../Models/TaskSchema");
 const User = require("../Models/Users");
 
+const taskMaker = async(req,res)=>{
+
+    const {title,description,priority,dueDate} = req.body
+    try{
+
+      const newTask =  new Tasks({
+        title,
+        description,
+        priority,
+        dueDate
+      })
+      await newTask.save()
+      res.status(201).json({
+        newTask
+      })
+    }catch(error)
+    {
+      return res.status(400).json({error:error.message})
+    }
+    
+}
 const assignTasks = async (req, res) => {
   try {
-    const { taskId, userId } = req.body;
+  
+    const { taskId,userId } = req.body;
 
     const task = await Tasks.findById(taskId);
     const user = await User.findById(userId);
@@ -49,10 +71,12 @@ const assignTasks = async (req, res) => {
 };
 
 const deleteTask = async (req, res) => {
+
   try {
     const { taskId } = req.params;
-
+ console.log("1 - Delete started");
     const task = await Tasks.findById(taskId);
+    
 
     if (!task) {
       return res.status(404).json({
@@ -60,7 +84,7 @@ const deleteTask = async (req, res) => {
         message: "Task not found",
       });
     }
-
+  
     // Remove task reference from all users
     await User.updateMany(
       { tasks: task._id },
@@ -73,6 +97,7 @@ const deleteTask = async (req, res) => {
       success: true,
       message: "Task deleted successfully",
     });
+   
   } catch (error) {
     res.status(500).json({
       success: false,
@@ -242,6 +267,7 @@ const assignMember = async (req, res) => {
 
 module.exports = {
   assignTasks,
+  taskMaker,
   deleteTask,
   changePriority,
   getAllTasks,

@@ -2,10 +2,13 @@ const express = require("express")
 const app = express()
 const dbConnect = require("./db")
 const cors = require("cors")
+const dotenv = require("dotenv")
+dotenv.config()
 const TaskManager = require("./controllers/tasksManager")
 const registerUser = require("./controllers/registerUser")
 const login = require("./controllers/login")
 const auth = require("./middlewares/Auth")
+
 
 
 app.use(cors())
@@ -15,17 +18,19 @@ dbConnect()
 
 app.post("/register", registerUser)
 app.post("/login", login)
-app.post("/assign-task", TaskManager.assignTasks)
-app.delete("/delete-task/:taskId", TaskManager.deleteTask)
-app.put("/change-priority/:taskId", TaskManager.changePriority)
-app.put("/remove-member/:taskId", TaskManager.removeMember) 
-app.post("/assign-member/:taskId", TaskManager.assignMember)
-app.post("/get-all-tasks", TaskManager.getAllTasks)
+app.post("/assign-task",auth, TaskManager.assignTasks)
+app.delete("/delete-task/:taskId",auth, TaskManager.deleteTask)
+app.put("/change-priority/:taskId",auth, TaskManager.changePriority)
+app.put("/remove-member/:taskId",auth, TaskManager.removeMember) 
+app.post("/assign-member/:taskId",auth, TaskManager.assignMember)
+app.post("/get-all-tasks",auth, TaskManager.getAllTasks)
+app.post("/task-maker",auth,TaskManager.taskMaker)
 
 
 
 
 
-app.listen(3000,()=>{
+
+app.listen(process.env.PORT,()=>{
 console.log("app is listening")
 })
