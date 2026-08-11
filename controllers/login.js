@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken")
 const User = require("../Models/Users")
-
+const bcrypt = require('bcryptjs')
 const login = async (req, res) => {
   const { email, password } = req.body
 
@@ -10,8 +10,8 @@ const login = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: "User not found" })
     }
-
-    if (user.password !== password) {
+    const isMatch= await bcrypt.compare(password,user.password)
+    if (!isMatch) {
       return res.status(401).json({ message: "Invalid password" })
     }
 

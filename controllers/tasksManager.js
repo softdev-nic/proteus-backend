@@ -264,6 +264,44 @@ const assignMember = async (req, res) => {
     });
   }
 };
+const getTaskDetails = async(req,res)=>{
+  try{
+  const {taskId} = req.body
+  const task = await Tasks.findById(taskId)
+  if(!taskId)
+  {
+    return res.status(200).json({
+      error:"task is not available anymore"
+    })
+
+  }
+  res.status(201).json({task})
+}catch(error)
+{
+  res.status(400).json({
+    error:error.message
+  })
+}
+}
+const getTasks = async(req,res)=>{
+  try{
+
+    const {userId} = req.body
+    const user = await User.findById(userId)
+    if(!user){
+    return res.status(400).json({
+      error:"user not found"
+    })
+  }
+  res.send({data:user.tasks})
+}catch(error)
+
+{
+  res.status(500).json({
+    error:error.message
+  })
+}
+}
 
 module.exports = {
   assignTasks,
@@ -272,5 +310,7 @@ module.exports = {
   changePriority,
   getAllTasks,
   removeMember,
-  assignMember
+  assignMember,
+  getTaskDetails,
+  getTasks
 };

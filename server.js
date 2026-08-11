@@ -25,6 +25,8 @@ app.put("/remove-member/:taskId",auth, TaskManager.removeMember)
 app.post("/assign-member/:taskId",auth, TaskManager.assignMember)
 app.post("/get-all-tasks",auth, TaskManager.getAllTasks)
 app.post("/task-maker",auth,TaskManager.taskMaker)
+app.get("/taskdetails",TaskManager.getTaskDetails)
+app.get("/gettasks",TaskManager.getTasks)
 
 
 
