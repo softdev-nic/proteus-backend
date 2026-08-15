@@ -16,7 +16,7 @@ app.use(cors())
 app.use(express.json())
 
 dbConnect()
-app.post("/test",(req,res)=>{
+app.get("/test",(req,res)=>{
 res.status(200).json({response:"ok"})
 })
 
