@@ -302,6 +302,27 @@ const getTasks = async(req,res)=>{
   })
 }
 }
+const getSelfTasks = async(req,res)=>{
+   
+  try{
+
+    
+    const user = await User.findById(req.user._id)
+    if(!user){
+    return res.status(400).json({
+      error:"user not found"
+    })
+  }
+  res.send({data:user.tasks})
+}catch(error)
+
+{
+  res.status(500).json({
+    error:error.message
+  })
+}
+}
+
 
 module.exports = {
   assignTasks,
@@ -312,5 +333,6 @@ module.exports = {
   removeMember,
   assignMember,
   getTaskDetails,
-  getTasks
+  getTasks,
+  getSelfTasks
 };
